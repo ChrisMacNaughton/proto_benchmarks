@@ -1,0 +1,11 @@
+language: rust
+
+distro: trusty
+
+addons:
+  apt:
+    packages:
+      - capnproto
+
+script:
+  - cargo bench

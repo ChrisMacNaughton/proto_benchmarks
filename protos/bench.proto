@@ -16,6 +16,6 @@ message Basic {
 message Complex {
     required string name = 1;
     // error_msg is set if ERR
-    optional Basic basic = 2;
+    required Basic basic = 2;
     required string reference = 3;
 }

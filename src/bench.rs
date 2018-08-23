@@ -236,7 +236,7 @@ impl Complex {
         }
     }
 
-    // optional .bench.Basic basic = 2;
+    // required .bench.Basic basic = 2;
 
     pub fn clear_basic(&mut self) {
         self.basic.clear();
@@ -309,6 +309,9 @@ impl Complex {
 impl ::protobuf::Message for Complex {
     fn is_initialized(&self) -> bool {
         if self.name.is_none() {
+            return false;
+        }
+        if self.basic.is_none() {
             return false;
         }
         if self.reference.is_none() {
@@ -475,7 +478,7 @@ impl ::protobuf::reflect::ProtobufValue for Complex {
 static file_descriptor_proto_data: &'static [u8] = b"\
     \n\x0bbench.proto\x12\x05bench\"\x17\n\x05Basic\x12\x0e\n\x02id\x18\x01\
     \x20\x02(\x04B\x02\x18\0\"S\n\x07Complex\x12\x10\n\x04name\x18\x01\x20\
-    \x02(\tB\x02\x18\0\x12\x1f\n\x05basic\x18\x02\x20\x01(\x0b2\x0c.bench.Ba\
+    \x02(\tB\x02\x18\0\x12\x1f\n\x05basic\x18\x02\x20\x02(\x0b2\x0c.bench.Ba\
     sicB\x02\x18\0\x12\x15\n\treference\x18\x03\x20\x02(\tB\x02\x18\0B\0b\
     \x06proto2\
 ";

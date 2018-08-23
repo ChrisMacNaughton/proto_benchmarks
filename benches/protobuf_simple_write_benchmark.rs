@@ -6,18 +6,17 @@ extern crate proto_benchmarks;
 
 use criterion::Criterion;
 
-use capnp::{message, serialize, message::ReaderOptions, Word};
-use protobuf::{Message, parse_from_bytes};
+use protobuf::{Message};
 
-fn simple_write(id: u64) -> Vec<u8> {
-    let mut stat = proto_benchmarks::bench::Basic::new();
-    stat.set_id(id);
-
+fn simple_write(stat: &proto_benchmarks::bench::Basic) -> Vec<u8> {
     stat.write_to_bytes().unwrap()
 }
 
 fn criterion_benchmark(c: &mut Criterion) {
-    c.bench_function("protobuff_simple_write", |b| b.iter(|| simple_write(20)));
+    let mut stat = proto_benchmarks::bench::Basic::new();
+    stat.set_id(12);
+
+    c.bench_function("protobuff_simple_write", |b| b.iter(|| simple_write(&stat)));
 }
 
 criterion_group!(benches, criterion_benchmark);

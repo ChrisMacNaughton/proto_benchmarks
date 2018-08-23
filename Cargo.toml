@@ -19,9 +19,9 @@ criterion = "0.1.2"
 # name = "capnp_complex_read_benchmark"
 # harness = false
 
-# [[bench]]
-# name = "capnp_complex_write_benchmark"
-# harness = false
+[[bench]]
+name = "capnp_complex_write_benchmark"
+harness = false
 
 # [[bench]]
 # name = "capnp_simple_read_benchmark"
@@ -35,9 +35,9 @@ harness = false
 # name = "protobuf_complex_read_benchmark"
 # harness = false
 
-# [[bench]]
-# name = "protobuf_complex_write_benchmark"
-# harness = false
+[[bench]]
+name = "protobuf_complex_write_benchmark"
+harness = false
 
 # [[bench]]
 # name = "protobuf_simple_read_benchmark"

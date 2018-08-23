@@ -6,21 +6,29 @@ extern crate proto_benchmarks;
 
 use criterion::Criterion;
 
-use capnp::{message, serialize, message::ReaderOptions, Word};
-use protobuf::{Message, parse_from_bytes};
+use capnp::{message, serialize, Word};
 
-fn simple_write(n: u64) -> Vec<Word> {
-    let mut message = message::Builder::new_default();
-    {
-        let mut simple = message.init_root::<proto_benchmarks::bench_capnp::complex::Builder>();
-        simple.set_id(n);
-    }
-
-    serialize::write_message_to_words(&message)
+fn complex_write<A: message::Allocator>(message: &message::Builder<A>) -> Vec<Word> {
+    serialize::write_message_to_words(message)
 }
 
 fn criterion_benchmark(c: &mut Criterion) {
-    c.bench_function("capnp_simple_write", |b| b.iter(|| simple_write(20)));
+    let mut message = message::Builder::new_default();
+    {
+        // let mut basic = message::Builder::new_default();
+
+        let mut complex = message.init_root::<proto_benchmarks::bench_capnp::complex::Builder>();
+        // complex.set_basic(basic);
+        complex.set_name("name");
+        complex.set_reference("reference");
+
+        {
+            // let mut simple = basic.init_root::<proto_benchmarks::bench_capnp::basic::Builder>();
+            let mut basic = complex.get_basic().unwrap();
+            basic.set_id(12);
+        }
+    }
+    c.bench_function("capnp_simple_write", |b| b.iter(|| complex_write(&message)));
 }
 
 criterion_group!(benches, criterion_benchmark);
