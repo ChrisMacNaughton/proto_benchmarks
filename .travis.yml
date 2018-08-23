@@ -6,6 +6,8 @@ addons:
   apt:
     packages:
       - capnproto
+      - gnuplot
 
 script:
+  - cargo test
   - cargo bench

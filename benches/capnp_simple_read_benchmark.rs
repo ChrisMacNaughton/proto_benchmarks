@@ -6,21 +6,19 @@ extern crate proto_benchmarks;
 
 use criterion::Criterion;
 
-use capnp::{message, serialize, message::ReaderOptions, Word};
-use protobuf::{Message, parse_from_bytes};
+use capnp::{message, serialize, message::ReaderOptions};
 
-fn simple_write(n: u64) -> Vec<Word> {
+fn criterion_benchmark(c: &mut Criterion) {
     let mut message = message::Builder::new_default();
     {
         let mut simple = message.init_root::<proto_benchmarks::bench_capnp::basic::Builder>();
-        simple.set_id(n);
+        simple.set_id(12);
     }
+    let words = serialize::write_message_to_words(&message);
 
-    serialize::write_message_to_words(&message)
-}
-
-fn criterion_benchmark(c: &mut Criterion) {
-    c.bench_function("capnp_simple_write", |b| b.iter(|| simple_write(20)));
+    c.bench_function("capnp_simple_read", |b| b.iter(||
+        serialize::read_message_from_words(&words, ReaderOptions::new()).unwrap()
+    ));
 }
 
 criterion_group!(benches, criterion_benchmark);

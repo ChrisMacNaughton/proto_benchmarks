@@ -28,7 +28,7 @@ fn criterion_benchmark(c: &mut Criterion) {
             basic.set_id(12);
         }
     }
-    c.bench_function("capnp_simple_write", |b| b.iter(|| complex_write(&message)));
+    c.bench_function("capnp_complex_write", |b| b.iter(|| complex_write(&message)));
 }
 
 criterion_group!(benches, criterion_benchmark);
