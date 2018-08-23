@@ -1,12 +1,22 @@
 language: rust
 
-distro: xenial
+distro: trusty
 
 addons:
   apt:
     packages:
-      - capnproto
+      - gcc
+      - g++
       - gnuplot
+
+install:
+  - curl -O https://capnproto.org/capnproto-c++-0.6.1.tar.gz
+  - tar zxf capnproto-c++-0.6.1.tar.gz
+  - cd capnproto-c++-0.6.1
+  - ./configure --prefix=$HOME
+  - make -j3
+  - make install
+  - cd ../
 
 script:
   - cargo test
