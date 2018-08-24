@@ -19,5 +19,5 @@ install:
   - cd ../
 
 script:
-  - cargo test
+  - cargo test --release
   - cargo bench

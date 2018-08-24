@@ -18,35 +18,51 @@ criterion = "0.1.2"
 # Reads
 
 [[bench]]
-name = "protobuf_basic_read_benchmark"
+name = "basic_read"
 harness = false
 
 [[bench]]
-name = "capnp_basic_read_benchmark"
+name = "complex_read"
 harness = false
 
-[[bench]]
-name = "protobuf_complex_read_benchmark"
-harness = false
+# [[bench]]
+# name = "protobuf_basic_read_benchmark"
+# harness = false
 
-[[bench]]
-name = "capnp_complex_read_benchmark"
-harness = false
+# [[bench]]
+# name = "capnp_basic_read_benchmark"
+# harness = false
+
+# [[bench]]
+# name = "protobuf_complex_read_benchmark"
+# harness = false
+
+# [[bench]]
+# name = "capnp_complex_read_benchmark"
+# harness = false
 
 # Writes
 
 [[bench]]
-name = "protobuf_basic_write_benchmark"
+name = "basic_write"
 harness = false
 
 [[bench]]
-name = "capnp_basic_write_benchmark"
+name = "complex_write"
 harness = false
 
-[[bench]]
-name = "protobuf_complex_write_benchmark"
-harness = false
+# [[bench]]
+# name = "protobuf_basic_write_benchmark"
+# harness = false
 
-[[bench]]
-name = "capnp_complex_write_benchmark"
-harness = false
+# [[bench]]
+# name = "capnp_basic_write_benchmark"
+# harness = false
+
+# [[bench]]
+# name = "protobuf_complex_write_benchmark"
+# harness = false
+
+# [[bench]]
+# name = "capnp_complex_write_benchmark"
+# harness = false

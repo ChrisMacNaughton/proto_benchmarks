@@ -53,49 +53,21 @@ message Complex {
 }
 ```
 
-## Write
+## Basic Read
 
-### Basic
+![Basic Read](.criterion/basic_read/summary/new/violin_plot.svg)
 
-#### Protobuf
+## Basic Write
 
-![Protobuf](.criterion/protobuf_basic_write/new/mean.svg)
+![Basic Write](.criterion/basic_write/summary/new/violin_plot.svg)
 
-#### Cap'n Proto
+## Complex Read
 
-![Capnp](.criterion/capnp_basic_write/new/mean.svg)
+![Complex Read](.criterion/complex_read/summary/new/violin_plot.svg)
 
-### Complex
+## Complex Write
 
-#### Protobuf
-
-![Protobuf](.criterion/protobuf_complex_write/new/mean.svg)
-
-#### Cap'n Proto
-
-![Capnp](.criterion/capnp_complex_write/new/mean.svg)
-
-## Read
-
-### Basic
-
-#### Protobuf
-
-![Protobuf](.criterion/protobuf_basic_read/new/mean.svg)
-
-#### Cap'n Proto
-
-![Capnp](.criterion/capnp_basic_read/new/mean.svg)
-
-### Complex
-
-#### Protobuf
-
-![Protobuf](.criterion/protobuf_complex_read/new/mean.svg)
-
-#### Cap'n Proto
-
-![Capnp](.criterion/capnp_complex_read/new/mean.svg)
+![Complex Write](.criterion/complex_write/summary/new/violin_plot.svg)
 
 ## Todo
 
