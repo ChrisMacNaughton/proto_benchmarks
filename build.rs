@@ -1,5 +1,5 @@
-
 extern crate capnpc;
+extern crate prost_build;
 extern crate protobuf_codegen_pure;
 
 fn main() {
@@ -16,4 +16,7 @@ fn main() {
         .file("protos/bench.capnp")
         .run()
         .expect("compiling schema");
+
+    prost_build::compile_protos(&["protos/bench.proto"],
+                                &["protos"]).unwrap();
 }

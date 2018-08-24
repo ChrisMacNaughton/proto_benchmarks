@@ -87,13 +87,64 @@ mod tests {
             }
         }
     }
+
+    mod prost {
+        mod basic {
+            use prost::Message;
+            use bench_prost::Basic;
+
+            #[test]
+            fn it_deserializes() {
+                let basic = Basic { id: 12 };
+
+                let mut bytes = Vec::new();
+                basic.encode(&mut bytes).unwrap();
+
+                let parsed = Basic::decode(&bytes).unwrap();
+                assert_eq!(parsed.id, 12);
+            }
+        }
+
+        mod complex {
+            use prost::Message;
+            use bench_prost::{Basic, Complex};
+
+            #[test]
+            fn it_deserializes() {
+                let basic = Basic {
+                    id: 12,
+                };
+                let stat = Complex {
+                    basic,
+                    name: "name".into(),
+                    reference: "reference".into(),
+                };
+
+                let mut bytes = Vec::new();
+                stat.encode(&mut bytes).unwrap();
+
+                let parsed = Complex::decode(&bytes).unwrap();
+                assert_eq!(parsed.basic.id, 12);
+                assert_eq!(parsed.name, "name");
+            }
+        }
+    }
 }
 
 extern crate capnp;
+extern crate prost;
 extern crate protobuf;
+extern crate bytes;
+
+#[macro_use]
+extern crate prost_derive;
 
 pub mod bench;
 pub mod bench_capnp;
+
+pub mod bench_prost {
+    include!(concat!(env!("OUT_DIR"), "/bench.rs"));
+}
 
 pub use bench as bench_protobuf;
 // pub struct Basic {
