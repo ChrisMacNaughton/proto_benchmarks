@@ -16,7 +16,7 @@ fn criterion_benchmark(c: &mut Criterion) {
     let mut stat = proto_benchmarks::bench::Basic::new();
     stat.set_id(12);
 
-    c.bench_function("protobuff_simple_write", |b| b.iter(|| simple_write(&stat)));
+    c.bench_function("protobuf_simple_write", |b| b.iter(|| simple_write(&stat)));
 }
 
 criterion_group!(benches, criterion_benchmark);

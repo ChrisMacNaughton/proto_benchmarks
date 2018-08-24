@@ -13,8 +13,8 @@ fn criterion_benchmark(c: &mut Criterion) {
     basic.set_id(12);
     let bytes = basic.write_to_bytes().unwrap();
 
-    c.bench_function("protobuff_simple_read", |b| b.iter(||
-        parse_from_bytes::<proto_benchmarks::bench::Complex>(&bytes).unwrap()
+    c.bench_function("protobuf_simple_read", |b| b.iter(||
+        parse_from_bytes::<proto_benchmarks::bench::Basic>(&bytes).unwrap()
     ));
 }
 

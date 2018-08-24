@@ -16,7 +16,7 @@ fn criterion_benchmark(c: &mut Criterion) {
     stat.set_name("name".into());
     stat.set_reference("reference".into());
 
-    c.bench_function("protobuff_complex_write", |b| b.iter(||
+    c.bench_function("protobuf_complex_write", |b| b.iter(||
         stat.write_to_bytes().unwrap()
     ));
 }

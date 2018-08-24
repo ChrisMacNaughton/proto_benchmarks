@@ -7,15 +7,8 @@ message Basic {
     required uint64 id = 1;
 }
 
-// pub struct Complex<'a> {
-//     name: String,
-//     basic: Basic,
-//     reference: &'a str,
-// }
-
 message Complex {
     required string name = 1;
-    // error_msg is set if ERR
     required Basic basic = 2;
     required string reference = 3;
 }
