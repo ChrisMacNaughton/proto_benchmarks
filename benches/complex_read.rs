@@ -1,14 +1,17 @@
 #[macro_use]
 extern crate criterion;
 extern crate capnp;
-extern crate protobuf;
 extern crate proto_benchmarks;
+extern crate protobuf;
+extern crate prost;
 
 use criterion::{Criterion, Fun};
 
 use protobuf::{Message, parse_from_bytes};
 
 use capnp::{message, serialize, message::ReaderOptions};
+
+use prost::Message as ProstMessage;
 
 fn criterion_benchmark(c: &mut Criterion) {
     // Setup capnp
@@ -37,13 +40,19 @@ fn criterion_benchmark(c: &mut Criterion) {
     stat.set_name("name".into());
     stat.set_reference("reference".into());
     let bytes = stat.write_to_bytes().unwrap();
+    let prost_bytes = bytes.clone();
 
     let proto = Fun::new("protobuf", move |b, _i| b.iter(||{
         parse_from_bytes::<proto_benchmarks::bench::Complex>(&bytes).unwrap()
     }));
 
+    // Setup prost
+    let prost = Fun::new("prost", move |b, _i| b.iter(||{
+        proto_benchmarks::bench_prost::Complex::decode(&prost_bytes).unwrap()
+    }));
+
     // Setup Benchmark
-    let functions = vec!(cap, proto);
+    let functions = vec!(cap, proto, prost);
 
     c.bench_functions("complex_read", functions, &20);
 }

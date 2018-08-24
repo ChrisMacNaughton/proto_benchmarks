@@ -5,11 +5,15 @@ authors = ["Chris MacNaughton <chris@centaurisolutions.nl>"]
 build = "build.rs"
 
 [dependencies]
-protobuf = "*"
+bytes = "0.4"
 capnp = "*"
+prost = "0.4"
+prost-derive = "0.4"
+protobuf = "*"
 
 [build-dependencies]
 capnpc = "*"
+prost-build = "0.4"
 protobuf-codegen-pure = "~2"
 
 [dev-dependencies]
