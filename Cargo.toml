@@ -15,20 +15,14 @@ protobuf-codegen-pure = "~2"
 [dev-dependencies]
 criterion = "0.1.2"
 
+# Reads
+
 [[bench]]
-name = "capnp_complex_read_benchmark"
+name = "protobuf_basic_read_benchmark"
 harness = false
 
 [[bench]]
-name = "capnp_complex_write_benchmark"
-harness = false
-
-[[bench]]
-name = "capnp_simple_read_benchmark"
-harness = false
-
-[[bench]]
-name = "capnp_simple_write_benchmark"
+name = "capnp_basic_read_benchmark"
 harness = false
 
 [[bench]]
@@ -36,13 +30,23 @@ name = "protobuf_complex_read_benchmark"
 harness = false
 
 [[bench]]
+name = "capnp_complex_read_benchmark"
+harness = false
+
+# Writes
+
+[[bench]]
+name = "protobuf_basic_write_benchmark"
+harness = false
+
+[[bench]]
+name = "capnp_basic_write_benchmark"
+harness = false
+
+[[bench]]
 name = "protobuf_complex_write_benchmark"
 harness = false
 
 [[bench]]
-name = "protobuf_simple_read_benchmark"
-harness = false
-
-[[bench]]
-name = "protobuf_simple_write_benchmark"
+name = "capnp_complex_write_benchmark"
 harness = false
