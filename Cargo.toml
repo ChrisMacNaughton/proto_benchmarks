@@ -7,10 +7,12 @@ build = "build.rs"
 [dependencies]
 protobuf = "*"
 capnp = "*"
+quick-protobuf = "0.6.3"
 
 [build-dependencies]
 capnpc = "*"
 protobuf-codegen-pure = "~2"
+pb-rs = "0.4.1"
 
 [dev-dependencies]
 criterion = "0.1.2"

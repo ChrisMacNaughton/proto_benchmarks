@@ -3,12 +3,14 @@ extern crate criterion;
 extern crate capnp;
 extern crate protobuf;
 extern crate proto_benchmarks;
+extern crate quick_protobuf;
 
 use criterion::{Criterion, Fun};
 
 use protobuf::{Message};
 
 use capnp::{message, serialize};
+use quick_protobuf::serialize_into_vec;
 
 fn criterion_benchmark(c: &mut Criterion) {
     // Setup capnp
@@ -38,8 +40,18 @@ fn criterion_benchmark(c: &mut Criterion) {
         stat.write_to_bytes().unwrap()
     ));
 
+    // Setup quick-protobuf
+    let complex = proto_benchmarks::bench_quick::Complex {
+        name: "name".into(),
+        reference: "reference".into(),
+        basic: proto_benchmarks::bench_quick::Basic { id: 12 },
+    };
+    let quick = Fun::new("quick", move |b, _i| b.iter(|| {
+        serialize_into_vec(&complex).unwrap()
+    }));
+
     // Setup Benchmark
-    let functions = vec!(cap, proto);
+    let functions = vec!(cap, proto, quick);
 
     c.bench_functions("complex_write", functions, &20);
 }
