@@ -91,9 +91,11 @@ mod tests {
 
 extern crate capnp;
 extern crate protobuf;
+extern crate quick_protobuf;
 
 pub mod bench;
 pub mod bench_capnp;
+pub mod bench_quick;
 
 pub use bench as bench_protobuf;
 // pub struct Basic {
