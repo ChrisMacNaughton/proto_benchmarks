@@ -1,20 +1,16 @@
-#[macro_use]
-extern crate criterion;
-extern crate capnp;
-extern crate protobuf;
-extern crate proto_benchmarks;
-
-use criterion::{Criterion, Fun};
-
-use protobuf::{Message};
+use criterion::{Criterion, Fun, criterion_group, criterion_main};
+use proto_benchmarks::{bench, bench_capnp};
+use proto_benchmarks::bench_generated as bench_fbs;
 
 use capnp::{message, serialize};
+use protobuf::{Message};
+use flatbuffers;
 
 fn criterion_benchmark(c: &mut Criterion) {
     // Setup capnp
     let mut message = message::Builder::new_default();
     {
-        let mut complex = message.init_root::<proto_benchmarks::bench_capnp::complex::Builder>();
+        let mut complex = message.init_root::<bench_capnp::complex::Builder>();
         complex.set_name("name");
         complex.set_reference("reference");
 
@@ -28,9 +24,9 @@ fn criterion_benchmark(c: &mut Criterion) {
     ));
 
     // Setup protobuf
-    let mut basic = proto_benchmarks::bench::Basic::new();
+    let mut basic = bench::Basic::new();
     basic.set_id(12);
-    let mut stat = proto_benchmarks::bench::Complex::new();
+    let mut stat = bench::Complex::new();
     stat.set_basic(basic);
     stat.set_name("name".into());
     stat.set_reference("reference".into());
@@ -38,8 +34,23 @@ fn criterion_benchmark(c: &mut Criterion) {
         stat.write_to_bytes().unwrap()
     ));
 
+    // Setup flatbuffers
+    let mut builder = flatbuffers::FlatBufferBuilder::new();
+    {
+        let args = bench_fbs::bench::BasicArgs{id: 12};
+        let basic = Some(bench_fbs::bench::Basic::create(&mut builder, &args));
+        let name = Some(builder.create_string("name"));
+        let reference = Some(builder.create_string("reference"));
+        let args = bench_fbs::bench::ComplexArgs{ basic, name, reference };
+        let complex = bench_fbs::bench::Complex::create(&mut builder, &args);
+        builder.finish_minimal(complex);
+    }
+    let fbs = Fun::new("flatbuffers", move |b, _i| b.iter(||{
+        builder.finished_data().to_vec()
+    }));
+
     // Setup Benchmark
-    let functions = vec!(cap, proto);
+    let functions = vec!(cap, proto, fbs);
 
     c.bench_functions("complex_write", functions, &20);
 }

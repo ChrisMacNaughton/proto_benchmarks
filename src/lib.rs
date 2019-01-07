@@ -2,7 +2,7 @@
 mod tests {
     use super::*;
 
-    mod capnp {
+    mod capnp_test {
         use capnp::{message, serialize, message::ReaderOptions};
         use super::*;
 
@@ -50,7 +50,7 @@ mod tests {
         }
     }
 
-    mod protobuf {
+    mod protobuf_test {
         use protobuf::{Message, parse_from_bytes};
         use super::*;
 
@@ -87,22 +87,55 @@ mod tests {
             }
         }
     }
-}
 
-extern crate capnp;
-extern crate protobuf;
+    mod flatbuffers_test {
+        use flatbuffers::*;
+
+        mod basic {
+            use super::*;
+            use crate::bench_generated as bench_fbs;
+
+            #[test]
+            fn it_deserializes() {
+                const ID: u64 = 12;
+                let mut builder = FlatBufferBuilder::new();
+                let basic_args = bench_fbs::bench::BasicArgs { id: ID, .. Default::default() };
+                let basic: WIPOffset<_> = bench_fbs::bench::Basic::create(&mut builder, &basic_args);
+                builder.finish_minimal(basic);
+                //let parsed = bench_generated::bench::Basic::follow(builder.finished_data(), 0);
+                let parsed = flatbuffers::get_root::<bench_fbs::bench::Basic>(builder.finished_data());
+                assert_eq!(parsed.id(), ID);
+            }
+        }
+
+        mod complex {
+            use super::*;
+            use crate::bench_generated as bench_fbs;
+
+            #[test]
+            fn it_deserializes() {
+                const ID: u64 = 12;
+                const NAME: &str = "name";
+                const REFERENCE: &str = "reference";
+                let mut builder = flatbuffers::FlatBufferBuilder::new();
+                {
+                    let args = bench_fbs::bench::BasicArgs{id: ID};
+                    let basic = Some(bench_fbs::bench::Basic::create(&mut builder, &args));
+                    let name = Some(builder.create_string(NAME));
+                    let reference = Some(builder.create_string(REFERENCE));
+                    let args = bench_fbs::bench::ComplexArgs{ basic, name, reference };
+                    let complex = bench_fbs::bench::Complex::create(&mut builder, &args);
+                    builder.finish_minimal(complex);
+                }
+                let parsed = flatbuffers::get_root::<bench_fbs::bench::Complex>(builder.finished_data());
+                assert_eq!(parsed.basic().id(), ID);
+                assert_eq!(parsed.name(), NAME);
+                assert_eq!(parsed.reference(), REFERENCE);
+            }
+        }
+    }
+}
 
 pub mod bench;
 pub mod bench_capnp;
-
-pub use bench as bench_protobuf;
-// pub struct Basic {
-//     id: u64
-// }
-
-// pub struct Complex<'a> {
-//     name: String,
-//     basic: Basic,
-//     reference: &'a str,
-// }
-
+pub mod bench_generated;
