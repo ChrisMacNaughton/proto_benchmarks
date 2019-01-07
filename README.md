@@ -41,22 +41,22 @@ message Complex {
 
 ## Basic Read
 
-![Basic Read](.criterion/basic_read/summary/new/violin_plot.svg)
+![Basic Read](imgs/basic_read/violin.svg)
 
 ## Basic Write
 
-![Basic Write](.criterion/basic_write/summary/new/violin_plot.svg)
+![Basic Write](imgs/basic_write/violin.svg)
 
 ## Complex Read
 
-![Complex Read](.criterion/complex_read/summary/new/violin_plot.svg)
+![Complex Read](imgs/complex_read/violin.svg)
 
 ## Complex Write
 
-![Complex Write](.criterion/complex_write/summary/new/violin_plot.svg)
+![Complex Write](imgs/complex_write/violin.svg)
 
 ### Complex Build
 
 This benchmark is the same as the write above, but includes the actual struct construction.
 
-![Complex Build](.criterion/complex_build/summary/new/violin_plot.svg)
+![Complex Build](imgs/complex_build/violin.svg)
