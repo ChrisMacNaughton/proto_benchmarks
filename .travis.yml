@@ -8,6 +8,8 @@ addons:
       - gcc
       - g++
       - gnuplot
+      # For flatbuffers
+      - cmake
 
 install:
   - curl -O https://capnproto.org/capnproto-c++-0.6.1.tar.gz
@@ -17,6 +19,16 @@ install:
   - make -j3
   - make install
   - cd ../
+  # FlatBuffers
+  # Need -L to follow redirect for github release
+  - curl -LO https://github.com/google/flatbuffers/archive/v1.10.0.tar.gz
+  - tar xzf v1.10.0.tar.gz
+  - cd flatbuffers-1.10.0
+  - mkdir build && cd build
+  # Must be release build otherwise flatc skipped during install
+  - cmake -DCMAKE_BUILD_TYPE=Release ..
+  - make && sudo make install
+  - cd ../../
 
 script:
   - cargo test --release
