@@ -1,19 +1,16 @@
-#[macro_use]
-extern crate criterion;
-extern crate capnp;
-extern crate protobuf;
-extern crate proto_benchmarks;
-
-use criterion::{Criterion, Fun};
+use criterion::{Criterion, Fun, criterion_group, criterion_main};
+use proto_benchmarks::{bench, bench_capnp};
+use proto_benchmarks::bench_generated as bench_fbs;
 
 use capnp::{message, serialize, message::ReaderOptions};
 use protobuf::{Message, parse_from_bytes};
+use flatbuffers;
 
 fn criterion_benchmark(c: &mut Criterion) {
     // Setup capnp
     let mut message = message::Builder::new_default();
     {
-        let mut simple = message.init_root::<proto_benchmarks::bench_capnp::basic::Builder>();
+        let mut simple = message.init_root::<bench_capnp::basic::Builder>();
         simple.set_id(12);
     }
     let words = serialize::write_message_to_words(&message);
@@ -22,16 +19,25 @@ fn criterion_benchmark(c: &mut Criterion) {
     ));
 
     // Setup protobuf
-    let mut basic = proto_benchmarks::bench::Basic::new();
+    let mut basic = bench::Basic::new();
     basic.set_id(12);
     let bytes = basic.write_to_bytes().unwrap();
 
     let proto = Fun::new("protobuf", move |b, _i| b.iter(||
-        parse_from_bytes::<proto_benchmarks::bench::Basic>(&bytes).unwrap()
+        parse_from_bytes::<bench::Basic>(&bytes).unwrap()
+    ));
+
+    // Setup flatbuffers
+    let mut builder = flatbuffers::FlatBufferBuilder::new();
+    let basic_args = bench_fbs::bench::BasicArgs { id: 12 };
+    let basic = bench_fbs::bench::Basic::create(&mut builder, &basic_args);
+    builder.finish_minimal(basic);
+    let fbs = Fun::new("flatbuffers", move |b, _i| b.iter(||
+        flatbuffers::get_root::<bench_fbs::bench::Basic>(builder.finished_data())
     ));
 
     // Setup Benchmark
-    let functions = vec!(cap, proto);
+    let functions = vec!(cap, proto, fbs);
 
     c.bench_functions("basic_read", functions, &20);
 }

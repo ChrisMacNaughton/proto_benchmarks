@@ -3,17 +3,19 @@ name = "proto_benchmarks"
 version = "0.1.0"
 authors = ["Chris MacNaughton <chris@centaurisolutions.nl>"]
 build = "build.rs"
+edition = "2018"
 
 [dependencies]
 protobuf = "*"
 capnp = "*"
+flatbuffers = "*"
 
 [build-dependencies]
 capnpc = "*"
 protobuf-codegen-pure = "~2"
 
 [dev-dependencies]
-criterion = "0.1.2"
+criterion = "*"
 
 [[bench]]
 name = "basic_read"
